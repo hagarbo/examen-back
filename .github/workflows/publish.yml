@@ -28,4 +28,4 @@ jobs:
       - name: Build
         run: docker build -t ${{ secrets.DOCKER_USER }}/examen-back:latest .
       - name: Push
-        run: docker push ${{ secrets.DOCKER_USER }}/examen-front:latest
+        run: docker push ${{ secrets.DOCKER_USER }}/examen-back:latest
