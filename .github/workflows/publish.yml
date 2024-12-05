@@ -1,0 +1,30 @@
+name: CI/CD Examen
+on:
+  push:
+    branches:
+      - main
+jobs:
+  git-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - run: git config user.name
+      - run: git remote -v
+      - run: git branch
+
+  docker-image:
+    runs-on: ubuntu-latest
+    needs: git-commands
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      - name: Login en DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Build
+        run: docker build -t ${{ secrets.DOCKER_USER }}/examen-back:v1 .
+      - name: Push
+        run: docker push ${{ secrets.DOCKER_USER }}/examen-front:v1
